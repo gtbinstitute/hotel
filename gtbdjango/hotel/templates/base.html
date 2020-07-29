@@ -64,18 +64,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<span class="icon-bar"></span>
 						  </button>
 						  <div class="navbar-brand logo">
-								<h1><a href="index.html"><span>Best  </span> Hotel</a></h1>
+								<h1><a href="{% url 'home' %}"><span>Best  </span> Hotel</a></h1>
 							</div>
 						</div>
 						<!-- Collect the nav links, forms, and other content for toggling -->
 						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						  <ul class="nav navbar-nav">
-							<li class="active"><a href="index.html" data-hover="Home">Home </a></li>
-							<li><a href="about.html" data-hover="About">About</a></li>
+							<li class="active"><a href="{% url 'home' %}" data-hover="Home">Home </a></li>
+							<li><a href="{% url 'aboutus' %}" data-hover="About">About</a></li>
+							  <li><a data-hover="Rooms" href="rooms.html">Rooms</a></li>
 							<li><a data-hover="Restaurant" href="restaurant.html">Restaurant</a></li>
 							<li><a data-hover="Gallery" href="gallery.html">Gallery</a></li>
-							<li><a data-hover="Rooms" href="rooms.html">Rooms</a></li>
-							  <li><a  href="codes.html" data-hover="codes">Codes</a></li>
+							  <li><a href="{% url 'signup' %}" data-hover="codes">Signup</a></li>
 							 <li><a data-hover="Contact" href="contact.html">Contact</a></li>
 
 						  </ul>

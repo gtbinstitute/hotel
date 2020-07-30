@@ -4,5 +4,23 @@
 
 
 {% block content %}
-<h1>Signup</h1>
+<div class="content">
+			<!---contact--->
+			<div class="contact">
+				<div class="container">
+
+
+					<div class="col-md-8">
+						<h4>Signup</h4>
+						<form action="#" method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+							<input type="submit" value="Submit" >
+							<input type="reset" value="Clear" >
+						</form>
+					</div>
+					<div class="clearfix"> </div>
+				</div>
+			</div>
+</div>
 {% endblock %}

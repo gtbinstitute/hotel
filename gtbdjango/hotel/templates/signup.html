@@ -11,16 +11,36 @@
 
 
 					<div class="col-md-8">
-						<h4>Signup</h4>
+						<h2>Signup</h2><br>
 						<form action="#" method="post">
                             {% csrf_token %}
-                            {{ form.as_p }}
+                            {{ form.as_p }}<br>
 							<input type="submit" value="Submit" >
-							<input type="reset" value="Clear" >
+							<input type="reset" value="Clear" > <br>
+							{% if messages %}
+							<ul>
+								{% for message in messages %}
+									<li>{{ message }}</li>
+								{% endfor %}
+							</ul>
+							{% endif %}
 						</form>
 					</div>
 					<div class="clearfix"> </div>
 				</div>
 			</div>
+
+
+
 </div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("input[type='text']").addClass("form-control")
+		$("input[type='password']").addClass("form-control")
+		$("input[type='submit']").addClass("btn btn-success")
+		$("input[type='reset']").addClass("btn btn-danger")
+	})
+
+</script>
 {% endblock %}

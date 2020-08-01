@@ -26,3 +26,20 @@ class SignupForm(forms.ModelForm):
         if commit:
             userobj.save()
         return userobj
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(label="Username")
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+
+    def clean(self, *args, **kwargs):
+        user1 = self.cleaned_data.get("username")
+        pass1 = self.cleaned_data.get("password")
+
+        user_obj = User.objects.filter(username=user1).first()
+        if not user_obj:
+            raise forms.ValidationError("Wrong username")
+        else:
+            if not user_obj.check_password(pass1):
+                raise forms.ValidationError("Wrong password")
+        return super(LoginForm, self).clean(*args, **kwargs)

@@ -1,13 +1,15 @@
+from django.contrib.auth import login
+from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 
 
 # Create your views here.
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView
 
-from gtbdjango.hotel.forms import SignupForm
+from gtbdjango.hotel.forms import SignupForm, LoginForm
 
 
 def index(request):
@@ -23,6 +25,16 @@ class createuser(SuccessMessageMixin, CreateView):
 
     def dispatch(self, *args, **kwargs):
         return super(createuser, self).dispatch(*args, **kwargs)
+
+def mylogin(request):
+    formobj = LoginForm(request.POST or None)
+    if formobj.is_valid():
+        # username = formobj.cleaned_data.get("username")
+        # userobj = User.objects.get(username__iexact=username)
+        # login(request, userobj)
+        return HttpResponseRedirect(reverse("ghar"))
+    else:
+        return render(request, "login.html", {"form": formobj})
 
 
 def showaboutus(request):

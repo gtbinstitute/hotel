@@ -7,14 +7,20 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
 
-from gtbdjango.hotel.forms import SignupForm, LoginForm
+from .models import RoomCategory
+from .forms import SignupForm, LoginForm
 
 
 def index(request):
     return render(request, "index.html")
     # return HttpResponse("<h1>Welcome to Hotel Website</h1>")
+
+def AllRooms(request):
+    obj = RoomCategory.objects.all()    #Getting all the records from database
+    context = {"roomdetails": obj}
+    return render(request, "rooms.html", context)
 
 
 class createuser(SuccessMessageMixin, CreateView):

@@ -15,9 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from gtbdjango.hotel import urls
+
 
 urlpatterns = [
     path('siteadmin/', admin.site.urls),
-    path('', include(urls)),
+    path('', include('hotel.urls')),
 ]

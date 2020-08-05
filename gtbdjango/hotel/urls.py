@@ -1,6 +1,8 @@
 from django.conf.urls import url
+from django.conf.urls.static import static
 from django.urls import path
 
+from gtbdjango.gtb import settings
 from . import views
 
 urlpatterns = [
@@ -12,4 +14,5 @@ urlpatterns = [
     path('rooms', views.AllRooms, name="rooms"),
 
     # url("^create-profile$", views.createuser),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

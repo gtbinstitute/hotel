@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %} Rooms {% endblock %}
+{% block title %} Room Details {% endblock %}
 
 
 {% block content %}
@@ -8,25 +8,18 @@
 			<!---contact--->
 			<div class="contact">
 				<div class="container">
-						<div class="row">
-						{% for roomdetail in roomdetails %}
+					{% for roomdetail in roomcategorydetails %}
 
-						<div class="col-md-6" align="center">
-							{% if roomdetail.Image %}
-							<a href="{% url 'myroomdetails' roomdetail.id %}">
-							<img src="{{ roomdetail.Image.url }}" class="img-responsive img-rounded">
-							</a>
-							{% endif %}
-
-							<p class=""><strong>{{ roomdetail.categoryname | capfirst }}</strong></p>
-							<br>
-							</div>
-							{% if forloop.counter|divisibleby:2 %}
-							</div>
 							<div class="row">
-							{% endif %}
+								<div class="col-md-6">
+										{{ roomdetail.roomoptions }}
+								</div>
+								<div class="col-md-6">
+										Rs.{{ roomdetail.roomprice }}/-
+								</div>
+							</div>
 						{% endfor %}
-						</div>
+
 				</div>
 
 
@@ -85,7 +78,7 @@
 			<!--</div>-->
 					<!--</div>-->
 					<div class="clearfix"> </div>
-				</div>
+
 			</div>
 
 

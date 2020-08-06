@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView
 
-from .models import RoomCategory
+from .models import RoomCategory, RoomCategoryDetails
 from .forms import SignupForm, LoginForm
 
 
@@ -22,6 +22,10 @@ def AllRooms(request):
     context = {"roomdetails": obj}
     return render(request, "rooms.html", context)
 
+def RoomDetails(request, catid):
+    obj = RoomCategoryDetails.objects.filter(roomcategoryid=catid)
+    context = {"roomcategorydetails": obj}
+    return render(request, "roomdetails.html", context)
 
 class createuser(SuccessMessageMixin, CreateView):
     form_class = SignupForm

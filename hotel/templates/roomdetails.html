@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Room Details {% endblock %}
+
+
+{% block content %}
+<div class="content">
+			<!---contact--->
+			<div class="contact">
+				<div class="container">
+					{% for roomdetail in roomcategorydetails %}
+
+							<div class="row">
+								<div class="col-md-6">
+										{{ roomdetail.roomoptions }}
+								</div>
+								<div class="col-md-6">
+										Rs.{{ roomdetail.roomprice }}/-
+								</div>
+							</div>
+						{% endfor %}
+
+				</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					<!--<div class="col-md-8">-->
+						<!--<h2>Rooms Details</h2>-->
+                        <!--<br>-->
+                        <!--<div class="bs-example animated wow fadeInLeft" data-wow-duration="1000ms" data-example-id="contextual-table" style="border: 1px solid #eee">-->
+				<!--<table class="table">-->
+				  <!--<thead>-->
+					<!--<tr>-->
+					  <!--<th>Category Name</th>-->
+					  <!--<th>Features</th>-->
+					  <!--<th>Image</th>-->
+					<!--</tr>-->
+				  <!--</thead>-->
+					<!-- https://docs.djangoproject.com/en/3.0/ref/templates/builtins/ -->
+				  <!--<tbody>-->
+                    <!--{% for roomdetail in roomdetails %}-->
+
+                        <!--<tr>-->
+                            <!--<td>{{ roomdetail.categoryname | capfirst }}</td>-->
+                            <!--<td>{{ roomdetail.features }}</td>-->
+                            <!--<td>-->
+								<!--{% if roomdetail.Image %}-->
+									<!--<img src="{{ roomdetail.Image.url }}" width="150px">-->
+								<!--{% endif %}-->
+							<!--</td>-->
+
+                        <!--</tr>-->
+                    <!--{% endfor %}-->
+				  <!--</tbody>-->
+				<!--</table>-->
+			<!--</div>-->
+					<!--</div>-->
+					<div class="clearfix"> </div>
+
+			</div>
+
+
+
+</div>
+
+{% endblock %}

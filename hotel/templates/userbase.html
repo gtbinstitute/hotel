@@ -1,0 +1,111 @@
+<!--A Design by W3layouts
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>{% block title%} {% endblock %}</title>
+    {% load static %}
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+<!--theme-style-->
+<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" media="all" />
+<link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
+<!--//theme-style-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta property="og:title" content="Vide" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Best Hotel Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!---->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<!---->
+<link rel="stylesheet" href="{% static 'css/flexslider.css' %}" type="text/css" media="screen" />
+<link href='https://fonts.googleapis.com/css?family=Nunito:400,700,300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,800italic,800,700italic,700,600italic,600,400italic,300italic,300' rel='stylesheet' type='text/css'>
+<!---strat-date-piker---->
+<!-- requried-jsfiles-for owl -->
+							<link href="{% static 'css/owl.carousel.css' %}" rel="stylesheet">
+							    <script src="{% static 'js/owl.carousel.js' %}"></script>
+							        <script>
+							    $(document).ready(function() {
+							      $("#owl-demo").owlCarousel({
+							        items : 1,
+							        lazyLoad : true,
+							        autoPlay : true,
+							        navigation : false,
+							        navigationText :  false,
+							        pagination : true,
+							      });
+							    });
+							    </script>
+							 <!-- //requried-jsfiles-for owl -->
+
+</head>
+<body>
+
+    <div class="header">
+		<div class="container">
+			<div class="header-menu">
+				<nav class="navbar navbar-default">
+					<div class="container-fluid">
+						<!-- Brand and toggle get grouped for better mobile display -->
+						<div class="navbar-header">
+						  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						  </button>
+						  <div class="navbar-brand logo">
+								<h1><a href="{% url 'ghar' %}"><span>Best  </span> Hotel</a></h1>
+							</div>
+						</div>
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						  <ul class="nav navbar-nav">
+							<li><a href="{% url 'ghar' %}" data-hover="Home">Home </a></li>
+							<li><a href="{% url 'aboutus' %}" data-hover="About">About</a></li>
+							  <li><a data-hover="Rooms" href="{% url 'rooms' %}">Rooms</a></li>
+							<li><a data-hover="Restaurant" href="restaurant.html">Restaurant</a></li>
+							<li><a data-hover="Gallery" href="gallery.html">Gallery</a></li>
+							 <li><a data-hover="Contact" href="contact.html">Contact</a></li>
+							  <li><a data-hover="My Account" href="myaccount.html">My Account</a></li>
+							  <li><a data-hover="Signout" href="{% url 'signout' %}">Signout</a></li>
+						  </ul>
+						</div><!-- /.navbar-collapse -->
+					</div><!-- /.container-fluid -->
+				</nav>
+			<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+    <!---header--->
+
+    {% block content %}
+    {% endblock %}
+
+
+    <!--footer-->
+			<div class="copy-section">
+				<div class="container">
+					<div class="footer-top">
+						<p>&copy; 2016 Best Hotel. All rights reserved | Design by <a href="http://w3layouts.com">W3layouts</a></p>
+					</div>
+					<div class="social-icons">
+						<a href="#"><i class="icon"></i></a>
+						<a href="#"><i class="icon1"></i></a>
+						<a href="#"><i class="icon2"></i></a>
+						<a href="#"><i class="icon3"></i></a>
+					</div>
+				</div>
+			</div>
+	<!--footer-->
+</body>
+</html>

@@ -1,5 +1,6 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
+
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -40,13 +41,20 @@ class createuser(SuccessMessageMixin, CreateView):
 def mylogin(request):
     formobj = LoginForm(request.POST or None)
     if formobj.is_valid():
-        # username = formobj.cleaned_data.get("username")
-        # userobj = User.objects.get(username__iexact=username)
-        # login(request, userobj)
+        username = formobj.cleaned_data.get("username")
+        userobj = User.objects.get(username__iexact=username)
+        login(request, userobj)
+        request.session["myusername"] = userobj.username
+        request.session["myuseremail"] = userobj.email
         return HttpResponseRedirect(reverse("ghar"))
     else:
         return render(request, "login.html", {"form": formobj})
 
+def mysignout(request):
+    if request.session.has_key("myusername"):
+        del request.session["myusername"]
+        logout(request)
+        return HttpResponseRedirect(reverse("ghar"))
 
 def showaboutus(request):
     return render(request, "aboutus.html")

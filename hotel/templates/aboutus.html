@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends user.is_authenticated|yesno:"userbase.html,base.html" %}
 {% load static %}
 {% block title %} About Best Hotel {% endblock %}
 

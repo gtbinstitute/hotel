@@ -1,4 +1,6 @@
-{% extends "base.html" %}
+
+{% extends user.is_authenticated|yesno:"userbase.html,base.html" %}
+
 {% load static %}
 {% block title %} Welcome to Best Hotel {% endblock %}
 
@@ -9,6 +11,13 @@
 			<!---welcome--->
 			<div class="welcome">
 				<div class="container">
+					{% if user.is_authenticated %}
+					<p> Welcome {{ request.session.myusername }}</p>
+					{% else %}
+					<p> Welcome Guest </p>
+					{% endif %}
+
+
 					<h2 class="tittle">Welcome To Hotel</h2>
 						<p class="wel text">Semper ac dolor vitae accumsan. Cras interdum hendrerit lacinia. Phasellus accumsan urna vitae molestie interdum. Nam sed placerat libero, non eleifend dolor.</p>
 					<div class="wel-grids">

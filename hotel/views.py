@@ -23,8 +23,9 @@ def AllRooms(request):
     return render(request, "rooms.html", context)
 
 def RoomDetails(request, catid):
-    obj = RoomCategoryDetails.objects.filter(roomcategoryid=catid)
-    context = {"roomcategorydetails": obj}
+    obj = RoomCategoryDetails.objects.select_related('roomcategoryid').filter(roomcategoryid=catid)
+    obj2 = RoomCategoryDetails.objects.select_related('roomcategoryid').filter(roomcategoryid=catid).first()
+    context = {"roomcategorydetails": obj, "roomcatdetails": obj2}
     return render(request, "roomdetails.html", context)
 
 class createuser(SuccessMessageMixin, CreateView):

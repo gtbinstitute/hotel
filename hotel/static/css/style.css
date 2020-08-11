@@ -6,6 +6,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 body{
 	font-family: 'Open Sans', sans-serif;
 }
+.roomfeatures ul
+{
+    padding:10px;
+    margin-left:10px;
+}
 body a{
 	transition: 0.5s all;
 	-webkit-transition: 0.5s all;

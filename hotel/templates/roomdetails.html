@@ -8,17 +8,39 @@
 			<!---contact--->
 			<div class="contact">
 				<div class="container">
+
+					<h2>{{ roomcatdetails }}</h2>
+					<br>
+					<div class="roomfeatures">
+						{{ roomcatdetails.roomcategoryid.features | safe }}
+					</div>
+
+
+					<br>
+
+					<h4>{{ roomcatdetails }}'s Options available</h4>
+
+
 					{% for roomdetail in roomcategorydetails %}
 
+
+							<br>
 							<div class="row">
+								<div class="col-md-3">
+									<img src="{{ roomdetail.roomcategoryid.Image.url }}" class="img-responsive img-rounded" width="150px">
+
+								</div>
+
 								<div class="col-md-6">
 										{{ roomdetail.roomoptions }}
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-3">
 										Rs.{{ roomdetail.roomprice }}/-
 								</div>
+
 							</div>
-						{% endfor %}
+
+					{% endfor %}
 
 				</div>
 

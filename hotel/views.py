@@ -38,6 +38,9 @@ class createuser(SuccessMessageMixin, CreateView):
     def dispatch(self, *args, **kwargs):
         return super(createuser, self).dispatch(*args, **kwargs)
 
+def useraccount(request):
+    return render(request, "myaccount.html")
+
 def mylogin(request):
     formobj = LoginForm(request.POST or None)
     if formobj.is_valid():
@@ -46,9 +49,32 @@ def mylogin(request):
         login(request, userobj)
         request.session["myusername"] = userobj.username
         request.session["myuseremail"] = userobj.email
+        # request.session["joineddate"] = userobj.date_joined
         return HttpResponseRedirect(reverse("ghar"))
     else:
         return render(request, "login.html", {"form": formobj})
+
+def changepassword(request):
+    if request.method == 'POST':
+        data = request.POST
+        oldpassword = data.get("oldpassword", "1")
+        password1 = data.get("password1", "0")
+        password2 = data.get("password2", "0")
+        if password1 == password2:
+            myusername = request.session["myusername"]
+            u = User.objects.get(username__iexact=myusername)
+            u.set_password(password1)
+            u.save()
+            context = {"mymessage": "Password changed successfully"}
+        else:
+            context = {"mymessage": "Password does not match"}
+        return render(request, "changepassword.html", context)
+    else:
+        return render(request, "changepassword.html")
+
+
+    return render(request, "changepassword.html")
+
 
 def mysignout(request):
     if request.session.has_key("myusername"):

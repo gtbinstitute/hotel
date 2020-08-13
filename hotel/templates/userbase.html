@@ -67,6 +67,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								<h1><a href="{% url 'ghar' %}"><span>Best  </span> Hotel</a></h1>
 							</div>
 						</div>
+						<div class="welcometext">
+							{% if user.is_authenticated %}
+							 Welcome {{ request.session.myusername }}
+							{% else %}
+							 Welcome Guest
+							{% endif %}
+
+
+						</div>
 						<!-- Collect the nav links, forms, and other content for toggling -->
 						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						  <ul class="nav navbar-nav">
@@ -76,7 +85,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<li><a data-hover="Restaurant" href="restaurant.html">Restaurant</a></li>
 							<li><a data-hover="Gallery" href="gallery.html">Gallery</a></li>
 							 <li><a data-hover="Contact" href="contact.html">Contact</a></li>
-							  <li><a data-hover="My Account" href="myaccount.html">My Account</a></li>
+							  <li><a data-hover="My Account" href="{% url 'myaccount' %}">My Account</a></li>
 							  <li><a data-hover="Signout" href="{% url 'signout' %}">Signout</a></li>
 						  </ul>
 						</div><!-- /.navbar-collapse -->

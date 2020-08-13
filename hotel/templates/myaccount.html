@@ -1,0 +1,37 @@
+{% extends user.is_authenticated|yesno:"userbase.html,base.html" %}
+{% load static %}
+{% block title %} My Account {% endblock %}
+
+
+{% block content %}
+
+<div class="content">
+			<div class="about-section">
+				<div class="container">
+					<h2 class="tittle">My Account</h2>
+					<div class="about-grids">
+						<div class="col-md-4 about-grid">
+							<h4>About Your Account</h4>
+							<p>{{ request.session.myusername | capfirst }}</p>
+							<p>{{ request.session.myuseremail }}</p>
+							<!--<p>You joined on {{ request.session.joineddate }}</p>-->
+							<p><a href="{% url 'changepassword' %}">Change Password</a></p>
+						</div>
+						<div class="col-md-8 about-grid">
+							<div class="about-top">
+
+								<div class="clearfix"></div>
+							</div>
+
+
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</div>
+
+</div>
+
+	<!--//team-->
+    <script type="text/javascript" src="{% static 'js/numscroller-1.0.js' %}"></script>
+{% endblock %}

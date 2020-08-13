@@ -11,6 +11,13 @@ body{
     padding:10px;
     margin-left:10px;
 }
+.welcometext
+{
+    display:inline-block;
+    margin-left : 150px;
+    margin-top : 17px;
+    color : white;
+}
 body a{
 	transition: 0.5s all;
 	-webkit-transition: 0.5s all;

@@ -67,6 +67,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								<h1><a href="{% url 'ghar' %}"><span>Best  </span> Hotel</a></h1>
 							</div>
 						</div>
+						<div class="welcometext">
+							{% if user.is_authenticated %}
+							Welcome {{ request.session.myusername }}
+							{% else %}
+							 Welcome Guest
+							{% endif %}
+
+
+						</div>
 						<!-- Collect the nav links, forms, and other content for toggling -->
 						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						  <ul class="nav navbar-nav">

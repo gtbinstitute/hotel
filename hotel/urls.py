@@ -14,6 +14,8 @@ urlpatterns = [
     path('rooms', views.AllRooms, name="rooms"),
     path('room-details/<int:catid>', views.RoomDetails, name="myroomdetails"),
     path('signout', views.mysignout, name='signout'),
+    path('user-profile', views.useraccount, name='myaccount'),
+    path('change-password', views.changepassword, name='changepassword'),
     # url("^create-profile$", views.createuser),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

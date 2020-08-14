@@ -1,10 +1,10 @@
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-
 
 # Create your views here.
 from django.urls import reverse_lazy, reverse
@@ -18,16 +18,19 @@ def index(request):
     return render(request, "index.html")
     # return HttpResponse("<h1>Welcome to Hotel Website</h1>")
 
+
 def AllRooms(request):
-    obj = RoomCategory.objects.all()    #Getting all the records from database
+    obj = RoomCategory.objects.all()  # Getting all the records from database
     context = {"roomdetails": obj}
     return render(request, "rooms.html", context)
+
 
 def RoomDetails(request, catid):
     obj = RoomCategoryDetails.objects.select_related('roomcategoryid').filter(roomcategoryid=catid)
     obj2 = RoomCategoryDetails.objects.select_related('roomcategoryid').filter(roomcategoryid=catid).first()
     context = {"roomcategorydetails": obj, "roomcatdetails": obj2}
     return render(request, "roomdetails.html", context)
+
 
 class createuser(SuccessMessageMixin, CreateView):
     form_class = SignupForm
@@ -38,8 +41,10 @@ class createuser(SuccessMessageMixin, CreateView):
     def dispatch(self, *args, **kwargs):
         return super(createuser, self).dispatch(*args, **kwargs)
 
+
 def useraccount(request):
     return render(request, "myaccount.html")
+
 
 def mylogin(request):
     formobj = LoginForm(request.POST or None)
@@ -54,6 +59,8 @@ def mylogin(request):
     else:
         return render(request, "login.html", {"form": formobj})
 
+
+@login_required
 def changepassword(request):
     if request.method == 'POST':
         data = request.POST
@@ -62,18 +69,20 @@ def changepassword(request):
         password2 = data.get("password2", "0")
         if password1 == password2:
             myusername = request.session["myusername"]
-            u = User.objects.get(username__iexact=myusername)
-            u.set_password(password1)
-            u.save()
-            context = {"mymessage": "Password changed successfully"}
+            userobj = authenticate(username=myusername, password=oldpassword)
+            if userobj:
+                userobj.set_password(password1)
+                userobj.save()
+                formobj = LoginForm(None)
+                context = {"form": formobj, "loginmessage": "done"}
+                return render(request, "login.html", context)
+            else:
+                context = {"mymessage": "Wrong old password"}
         else:
-            context = {"mymessage": "Password does not match"}
+            context = {"mymessage": "New Passwords does not match"}
         return render(request, "changepassword.html", context)
     else:
         return render(request, "changepassword.html")
-
-
-    return render(request, "changepassword.html")
 
 
 def mysignout(request):
@@ -81,6 +90,7 @@ def mysignout(request):
         del request.session["myusername"]
         logout(request)
         return HttpResponseRedirect(reverse("ghar"))
+
 
 def showaboutus(request):
     return render(request, "aboutus.html")

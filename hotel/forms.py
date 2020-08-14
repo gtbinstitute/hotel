@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
 
@@ -36,10 +37,17 @@ class LoginForm(forms.Form):
         user1 = self.cleaned_data.get("username")
         pass1 = self.cleaned_data.get("password")
 
-        user_obj = User.objects.filter(username=user1).first()
+        user_obj = authenticate(username=user1, password=pass1)
         if not user_obj:
-            raise forms.ValidationError("Wrong username")
-        else:
-            if not user_obj.check_password(pass1):
-                raise forms.ValidationError("Wrong password")
+            raise forms.ValidationError("Wrong username / password")
         return super(LoginForm, self).clean(*args, **kwargs)
+
+
+        # user_obj = User.objects.filter(username=user1).first()
+        # if not user_obj:
+        #     raise forms.ValidationError("Wrong username")
+        # else:
+        #     if not user_obj.check_password(pass1):
+        #         raise forms.ValidationError("Wrong password")
+
+

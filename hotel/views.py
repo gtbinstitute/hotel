@@ -8,7 +8,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView
 
 from .models import RoomCategory, RoomCategoryDetails
 from .forms import SignupForm, LoginForm
@@ -61,6 +61,11 @@ def mylogin(request):
 
 
 @login_required
+def booking(request):
+    return render(request, "booking.html")
+
+
+@login_required
 def changepassword(request):
     if request.method == 'POST':
         data = request.POST
@@ -73,6 +78,7 @@ def changepassword(request):
             if userobj:
                 userobj.set_password(password1)
                 userobj.save()
+                logout(request)
                 formobj = LoginForm(None)
                 context = {"form": formobj, "loginmessage": "done"}
                 return render(request, "login.html", context)

@@ -31,11 +31,13 @@
 
 								</div>
 
-								<div class="col-md-6">
+								<div class="col-md-3">
 										{{ roomdetail.roomoptions }}
 								</div>
-								<div class="col-md-3">
-										Rs.{{ roomdetail.roomprice }}/-
+								<div class="col-md-3" align="center">
+										Rs.{{ roomdetail.roomprice }}/- <br>
+										<a href="{% url 'booking' %}"><button type="button" class="btn btn-danger">Book Now</button></a>
+
 								</div>
 
 							</div>

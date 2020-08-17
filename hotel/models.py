@@ -1,5 +1,7 @@
+from django.contrib.auth.models import User
 from django.db import models
 from ckeditor.fields import RichTextField
+
 
 # Create your models here.
 
@@ -20,3 +22,13 @@ class RoomCategoryDetails(models.Model):
 
     def __str__(self):
         return str(self.roomcategoryid)
+
+
+class Booking(models.Model):
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    roomcategoryid = models.ForeignKey(RoomCategory, on_delete=models.CASCADE)
+    roomdetailid = models.ForeignKey(RoomCategoryDetails, on_delete=models.CASCADE)
+    checkindate = models.DateField()
+    checkoutdate = models.DateField()
+    amount = models.IntegerField()
+

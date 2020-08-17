@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %} Login {% endblock %}
+{% block title %} Booking {% endblock %}
 
 
 {% block content %}
@@ -8,15 +8,11 @@
 			<!---contact--->
 			<div class="contact">
 				<div class="container">
-				{% if loginmessage %}
-					{% if loginmessage == "done" %}
-						<script type="text/javascript"> alert('Password Changed Successfully. Login again'); </script>
-					{% endif %}
-				{% endif %}
+
 
 					<div class="col-md-8">
-						<h2>Login</h2><br>
-						<form action="{% url 'userlogin' %}" method="post">
+						<h2>Booking</h2><br>
+						<form action="#" method="post">
                             {% csrf_token %}
                             {{ form.as_p }}<br>
 							<input type="submit" value="Submit">

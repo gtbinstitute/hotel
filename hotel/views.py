@@ -11,7 +11,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, UpdateView
 
 from .models import RoomCategory, RoomCategoryDetails
-from .forms import SignupForm, LoginForm
+from .forms import SignupForm, LoginForm, BookingForm
 
 
 def index(request):
@@ -62,7 +62,13 @@ def mylogin(request):
 
 @login_required
 def booking(request):
-    return render(request, "booking.html")
+    formobj = BookingForm(request.POST or None)
+    if formobj.is_valid():
+        pass
+    else:
+        pass
+    return render(request, "booking.html", {"form": formobj})
+
 
 
 @login_required

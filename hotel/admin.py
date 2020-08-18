@@ -12,3 +12,4 @@ class RoomCategoryAdmin(admin.ModelAdmin):
 @admin.register(RoomCategoryDetails)
 class RoomDetailsAdmin(admin.ModelAdmin):
     list_display = ['roomcategoryid', 'roomoptions', 'roomprice']
+

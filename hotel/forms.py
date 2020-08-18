@@ -1,6 +1,9 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.forms import ModelForm
+
+from hotel.models import Booking
 
 
 class SignupForm(forms.ModelForm):
@@ -51,3 +54,7 @@ class LoginForm(forms.Form):
         #         raise forms.ValidationError("Wrong password")
 
 
+class BookingForm(ModelForm):
+    class Meta:
+        model = Booking
+        exclude = ('username', 'roomcategoryid','roomdetailid','amount')

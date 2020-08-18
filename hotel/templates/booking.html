@@ -10,7 +10,7 @@
 				<div class="container">
 
 
-					<div class="col-md-8">
+					<div class="col-md-4">
 						<h2>Booking</h2><br>
 						<form action="#" method="post">
                             {% csrf_token %}
@@ -33,9 +33,31 @@
 
 
 </div>
-
+ <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
+	$(function() {
+		$("#id_checkindate").datepicker({
+    dateFormat: 'dd/mm/yy',
+    changeMonth: true,
+    changeYear: true,
+    minDate:  new Date(),
+    onSelect: function(){
+        $('#id_checkoutdate').datepicker('option', 'minDate', $("#id_checkindate").datepicker("getDate", "+2d"));
+    }
+    }).datepicker("setDate", new Date());
+
+	$("#id_checkoutdate").datepicker({
+    dateFormat: 'dd/mm/yy',
+    changeMonth: true,
+    changeYear: true,
+
+    });
+
+	  });
 	$(document).ready(function() {
+		$("input[type='number']").addClass("form-control")
+		$("select").addClass("form-control")
 		$("input[type='text']").addClass("form-control")
 		$("input[type='password']").addClass("form-control")
 		$("input[type='submit']").addClass("btn btn-success")

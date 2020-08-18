@@ -31,4 +31,13 @@ class Booking(models.Model):
     checkindate = models.DateField()
     checkoutdate = models.DateField()
     amount = models.IntegerField()
+    totalpersons = models.IntegerField()
+    guestname = models.CharField(max_length=70)
+    gender_choices = (
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('Other', 'Other'),
+    )
+    gender = models.CharField(max_length=6, choices=gender_choices)
+
 

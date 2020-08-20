@@ -16,7 +16,7 @@ urlpatterns = [
     path('signout', views.mysignout, name='signout'),
     path('user-profile', views.useraccount, name='myaccount'),
     path('change-password', views.changepassword, name='changepassword'),
-    path('room-booking', views.booking, name='booking'),
+    path('room-booking/<int:detailid>', views.booking, name='booking'),
     # url("^create-profile$", views.createuser),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

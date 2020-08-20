@@ -28,6 +28,7 @@ def AllRooms(request):
 def RoomDetails(request, catid):
     obj = RoomCategoryDetails.objects.select_related('roomcategoryid').filter(roomcategoryid=catid)
     obj2 = RoomCategoryDetails.objects.select_related('roomcategoryid').filter(roomcategoryid=catid).first()
+    request.session["catid"] = catid
     context = {"roomcategorydetails": obj, "roomcatdetails": obj2}
     return render(request, "roomdetails.html", context)
 
@@ -52,6 +53,7 @@ def mylogin(request):
         username = formobj.cleaned_data.get("username")
         userobj = User.objects.get(username__iexact=username)
         login(request, userobj)
+        request.session["userid"] = userobj.id
         request.session["myusername"] = userobj.username
         request.session["myuseremail"] = userobj.email
         # request.session["joineddate"] = userobj.date_joined
@@ -61,12 +63,22 @@ def mylogin(request):
 
 
 @login_required
-def booking(request):
+def booking(request, detailid):
     formobj = BookingForm(request.POST or None)
-    if formobj.is_valid():
-        pass
-    else:
-        pass
+    if request.method == "POST":
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.userid = User(id=request.session["userid"])
+            data.roomcategoryid = RoomCategory(id=request.session["catid"])
+            data.roomdetailid = RoomCategoryDetails(id=detailid)
+            roomcategorydetailsobj = RoomCategoryDetails.objects.get(id=detailid)
+            data.amount = roomcategorydetailsobj.roomprice
+            data.save()
+            return HttpResponseRedirect(reverse('ghar'))
+        else:
+            formobj = BookingForm(request.POST)
+
     return render(request, "booking.html", {"form": formobj})
 
 
@@ -100,6 +112,7 @@ def changepassword(request):
 def mysignout(request):
     if request.session.has_key("myusername"):
         del request.session["myusername"]
+        del request.session["userid"]
         logout(request)
         return HttpResponseRedirect(reverse("ghar"))
 

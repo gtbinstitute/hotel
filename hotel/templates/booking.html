@@ -38,17 +38,19 @@
 <script type="text/javascript">
 	$(function() {
 		$("#id_checkindate").datepicker({
-    dateFormat: 'dd/mm/yy',
+    dateFormat: 'yy-mm-dd',
     changeMonth: true,
     changeYear: true,
     minDate:  new Date(),
     onSelect: function(){
-        $('#id_checkoutdate').datepicker('option', 'minDate', $("#id_checkindate").datepicker("getDate", "+2d"));
+    		var date2 = $('#id_checkindate').datepicker('getDate', '+1d');
+			date2.setDate(date2.getDate()+1);
+			$('#id_checkoutdate').datepicker('option','minDate', date2);
     }
     }).datepicker("setDate", new Date());
 
 	$("#id_checkoutdate").datepicker({
-    dateFormat: 'dd/mm/yy',
+    dateFormat: 'yy-mm-dd',
     changeMonth: true,
     changeYear: true,
 

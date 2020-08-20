@@ -25,7 +25,7 @@ class RoomCategoryDetails(models.Model):
 
 
 class Booking(models.Model):
-    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    userid = models.ForeignKey(User, on_delete=models.CASCADE)
     roomcategoryid = models.ForeignKey(RoomCategory, on_delete=models.CASCADE)
     roomdetailid = models.ForeignKey(RoomCategoryDetails, on_delete=models.CASCADE)
     checkindate = models.DateField()

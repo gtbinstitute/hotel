@@ -57,4 +57,4 @@ class LoginForm(forms.Form):
 class BookingForm(ModelForm):
     class Meta:
         model = Booking
-        exclude = ('username', 'roomcategoryid','roomdetailid','amount')
+        exclude = ('userid', 'roomcategoryid','roomdetailid','amount')

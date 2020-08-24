@@ -1,7 +1,9 @@
+import datetime
+
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-
+from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -10,7 +12,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, UpdateView
 
-from .models import RoomCategory, RoomCategoryDetails
+from .models import RoomCategory, RoomCategoryDetails, Booking
 from .forms import SignupForm, LoginForm, BookingForm
 
 
@@ -20,8 +22,14 @@ def index(request):
 
 
 def AllRooms(request):
-    obj = RoomCategory.objects.all()  # Getting all the records from database
-    context = {"roomdetails": obj}
+
+    # obj2 = Booking.objects.filter(checkindate__lte=datetime.date.today())
+    obj2 = RoomCategory.objects.all().order_by('-roomsavailable')
+    # catname = obj2.categoryname
+    # roomsavailable = str(obj2.roomsavailable)
+    # obj = RoomCategory.objects.all()  # Getting all the records from database
+    # context = {"catname1": catname, "roomsno" : roomsavailable}
+    context = {"roomdetails" : obj2}
     return render(request, "rooms.html", context)
 
 
@@ -59,26 +67,24 @@ def mylogin(request):
         # request.session["joineddate"] = userobj.date_joined
         return HttpResponseRedirect(reverse("ghar"))
     else:
-        return render(request, "login.html", {"form": formobj})
+        return render(request, "login.html", {"sform": formobj})
 
 
 @login_required
 def booking(request, detailid):
     formobj = BookingForm(request.POST or None)
     if request.method == "POST":
-        form = BookingForm(request.POST)
-        if form.is_valid():
-            data = form.save(commit=False)
+        if formobj.is_valid():
+            data = formobj.save(commit=False)
             data.userid = User(id=request.session["userid"])
             data.roomcategoryid = RoomCategory(id=request.session["catid"])
             data.roomdetailid = RoomCategoryDetails(id=detailid)
             roomcategorydetailsobj = RoomCategoryDetails.objects.get(id=detailid)
             data.amount = roomcategorydetailsobj.roomprice
             data.save()
-            return HttpResponseRedirect(reverse('ghar'))
+            messages.success(request, 'Form submission successful')
         else:
             formobj = BookingForm(request.POST)
-
     return render(request, "booking.html", {"form": formobj})
 
 

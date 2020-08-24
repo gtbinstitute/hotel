@@ -18,7 +18,7 @@
 						<h2>Login</h2><br>
 						<form action="{% url 'userlogin' %}" method="post">
                             {% csrf_token %}
-                            {{ form.as_p }}<br>
+                            {{ sform.as_p }}<br>
 							<input type="submit" value="Submit">
 							<input type="reset" value="Clear" > <br>
 							{% if messages %}

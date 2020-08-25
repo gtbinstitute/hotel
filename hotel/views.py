@@ -22,14 +22,13 @@ def index(request):
 
 
 def AllRooms(request):
-
     # obj2 = Booking.objects.filter(checkindate__lte=datetime.date.today())
     obj2 = RoomCategory.objects.all().order_by('-roomsavailable')
     # catname = obj2.categoryname
     # roomsavailable = str(obj2.roomsavailable)
     # obj = RoomCategory.objects.all()  # Getting all the records from database
     # context = {"catname1": catname, "roomsno" : roomsavailable}
-    context = {"roomdetails" : obj2}
+    context = {"roomdetails": obj2}
     return render(request, "rooms.html", context)
 
 
@@ -76,17 +75,35 @@ def booking(request, detailid):
     if request.method == "POST":
         if formobj.is_valid():
             data = formobj.save(commit=False)
+
+            categoryid = request.session["catid"]
+
+            case_1 = Booking.objects.filter(roomcategoryid=categoryid, checkindate__lte=data.checkindate,
+                                            checkoutdate__gte=data.checkindate).exists()
+
+            # case 2: a room is booked before the requested check_out date and check_out date is after requested
+            # check_out date
+            case_2 = Booking.objects.filter(roomcategoryid=categoryid, checkindate__lte=data.checkoutdate,
+                                            checkoutdate__gte=data.checkoutdate).exists()
+
+            case_3 = Booking.objects.filter(roomcategoryid=categoryid, checkindate__gte=data.checkindate,
+                                            checkoutdate__lte=data.checkoutdate).exists()
+
+            # if either of these is true, abort and render the error
+            if case_1 or case_2 or case_3:
+                messages.error(request, 'Selected Dates are not available')
+                return render(request, "booking.html", {"form": formobj})
+
             data.userid = User(id=request.session["userid"])
             data.roomcategoryid = RoomCategory(id=request.session["catid"])
             data.roomdetailid = RoomCategoryDetails(id=detailid)
             roomcategorydetailsobj = RoomCategoryDetails.objects.get(id=detailid)
             data.amount = roomcategorydetailsobj.roomprice
             data.save()
-            messages.success(request, 'Form submission successful')
+            messages.success(request, 'Your request for booking has been successful')
         else:
             formobj = BookingForm(request.POST)
     return render(request, "booking.html", {"form": formobj})
-
 
 
 @login_required
@@ -120,7 +137,7 @@ def mysignout(request):
         del request.session["myusername"]
         del request.session["userid"]
         logout(request)
-        return HttpResponseRedirect(reverse("ghar"))
+    return HttpResponseRedirect(reverse("ghar"))
 
 
 def showaboutus(request):

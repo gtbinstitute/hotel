@@ -36,6 +36,7 @@ def RoomDetails(request, catid):
     obj = RoomCategoryDetails.objects.select_related('roomcategoryid').filter(roomcategoryid=catid)
     obj2 = RoomCategoryDetails.objects.select_related('roomcategoryid').filter(roomcategoryid=catid).first()
     request.session["catid"] = catid
+    # request.session["totalrooms"] = obj.roomcategoryid.roomsavailable
     context = {"roomcategorydetails": obj, "roomcatdetails": obj2}
     return render(request, "roomdetails.html", context)
 
@@ -71,11 +72,16 @@ def mylogin(request):
 
 @login_required
 def booking(request, detailid):
+    roomcategoryobj = RoomCategory.objects.get(id=request.session["catid"])
+    roomcategorydetailsobj = RoomCategoryDetails.objects.get(id=detailid)
+    image = roomcategoryobj.Image
+    catname = roomcategoryobj.categoryname
+    roomoptions = roomcategorydetailsobj.roomoptions
+    details = {"image":image, "catname" :catname, "roomoptions":roomoptions}
     formobj = BookingForm(request.POST or None)
     if request.method == "POST":
         if formobj.is_valid():
             data = formobj.save(commit=False)
-
             categoryid = request.session["catid"]
 
             case_1 = Booking.objects.filter(roomcategoryid=categoryid, checkindate__lte=data.checkindate,
@@ -91,19 +97,35 @@ def booking(request, detailid):
 
             # if either of these is true, abort and render the error
             if case_1 or case_2 or case_3:
-                messages.error(request, 'Selected Dates are not available')
-                return render(request, "booking.html", {"form": formobj})
+                count1 = Booking.objects.filter(roomcategoryid=categoryid, checkindate__lte=data.checkindate,
+                                            checkoutdate__gte=data.checkindate).count()
+                count2 = Booking.objects.filter(roomcategoryid=categoryid, checkindate__lte=data.checkoutdate,
+                                            checkoutdate__gte=data.checkoutdate).count()
+                count3 = Booking.objects.filter(roomcategoryid=categoryid, checkindate__gte=data.checkindate,
+                                            checkoutdate__lte=data.checkoutdate).count()
+
+                totalcount = 0
+                if count1 > 0:
+                    totalcount += count1
+                elif count2 > 0:
+                    totalcount += count2
+                elif count3 > 0:
+                    totalcount += count3
+
+                if totalcount == roomcategoryobj.roomsavailable:
+                    messages.error(request, 'Selected Dates are not available')
+                    return render(request, "booking.html", {"form": formobj})
 
             data.userid = User(id=request.session["userid"])
-            data.roomcategoryid = RoomCategory(id=request.session["catid"])
+            data.roomcategoryid = roomcategoryobj
             data.roomdetailid = RoomCategoryDetails(id=detailid)
-            roomcategorydetailsobj = RoomCategoryDetails.objects.get(id=detailid)
+
             data.amount = roomcategorydetailsobj.roomprice
             data.save()
             messages.success(request, 'Your request for booking has been successful')
         else:
             formobj = BookingForm(request.POST)
-    return render(request, "booking.html", {"form": formobj})
+    return render(request, "booking.html", {"form": formobj, "roomdetails":details})
 
 
 @login_required

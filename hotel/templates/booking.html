@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends user.is_authenticated|yesno:"userbase.html,base.html" %}
 {% load static %}
 {% block title %} Booking {% endblock %}
 
@@ -26,6 +26,13 @@
 							{% endif %}
 						</form>
 					</div>
+					<div class="col-md-8">
+						<h3>Room Selected</h3>
+
+						<img src="{{ roomdetails.image.url }}" class="img-responsive img-rounded" width="350px">
+						<h3>{{ roomdetails.catname }}</h3>
+						{{ roomdetails.roomoptions }}
+					</div>
 					<div class="clearfix"> </div>
 				</div>
 			</div>
@@ -47,13 +54,13 @@
 			date2.setDate(date2.getDate()+1);
 			$('#id_checkoutdate').datepicker('option','minDate', date2);
     }
-    }).datepicker("setDate", new Date());
+    });
 
 	$("#id_checkoutdate").datepicker({
     dateFormat: 'yy-mm-dd',
     changeMonth: true,
     changeYear: true,
-
+	minDate : +1,
     });
 
 	  });

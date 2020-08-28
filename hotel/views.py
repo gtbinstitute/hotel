@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+import requests
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 
@@ -17,7 +19,11 @@ from .forms import SignupForm, LoginForm, BookingForm
 
 
 def index(request):
-    return render(request, "index.html")
+    url = "http://api.openweathermap.org/data/2.5/weather?q=Jalandhar&appid=866720bef22869924a5d38c76429af2c&units=metric"
+    json_data = requests.get(url).json()
+    temperature = json_data["main"]["temp"]
+    tempdata = {"temp" : temperature}
+    return render(request, "index.html", tempdata)
     # return HttpResponse("<h1>Welcome to Hotel Website</h1>")
 
 

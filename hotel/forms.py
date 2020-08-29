@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
-from hotel.models import Booking
+from hotel.models import Booking, Profile
 
 
 class SignupForm(forms.ModelForm):
@@ -14,7 +14,7 @@ class SignupForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username','email',)
+        fields = ('username', 'email',)
 
     def clean_password2(self):
         pass1 = self.cleaned_data.get("password1")
@@ -32,6 +32,19 @@ class SignupForm(forms.ModelForm):
         return userobj
 
 
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('birth_date', 'phone')
+
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('email',)
+
+
+
 class LoginForm(forms.Form):
     username = forms.CharField(label="Username")
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
@@ -45,7 +58,6 @@ class LoginForm(forms.Form):
             raise forms.ValidationError("Wrong username / password")
         return super(LoginForm, self).clean(*args, **kwargs)
 
-
         # user_obj = User.objects.filter(username=user1).first()
         # if not user_obj:
         #     raise forms.ValidationError("Wrong username")
@@ -57,4 +69,4 @@ class LoginForm(forms.Form):
 class BookingForm(ModelForm):
     class Meta:
         model = Booking
-        exclude = ('userid', 'roomcategoryid','roomdetailid','amount')
+        exclude = ('userid', 'roomcategoryid', 'roomdetailid', 'amount')

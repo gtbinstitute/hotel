@@ -6,20 +6,21 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 import requests
+from django.db import transaction
 
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, UpdateView
 
 from .models import RoomCategory, RoomCategoryDetails, Booking
-from .forms import SignupForm, LoginForm, BookingForm
+from .forms import SignupForm, LoginForm, BookingForm, ProfileForm, UserForm
 
 
 def index(request):
-    url = "http://api.openweathermap.org/data/2.5/weather?q=Jalandhar&appid=866720bef22869924a5d38c76429af2c&units=metric"
+    url = "http://api.openweathermap.org/data/2.5/weather?q=Jalandhar&appid=YOURAPIKEY&units=metric"
     json_data = requests.get(url).json()
     temperature = json_data["main"]["temp"]
     tempdata = {"temp" : temperature}
@@ -55,6 +56,24 @@ class createuser(SuccessMessageMixin, CreateView):
 
     def dispatch(self, *args, **kwargs):
         return super(createuser, self).dispatch(*args, **kwargs)
+
+@login_required
+@transaction.atomic
+def updateuser(request):
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Your profile was successfully updated!')
+
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        user_form = UserForm(instance=request.user)
+        profile_form = ProfileForm(instance=request.user.profile)
+    return render(request, 'updateprofile.html', {'user_form': user_form, 'profile_form': profile_form})
 
 
 def useraccount(request):

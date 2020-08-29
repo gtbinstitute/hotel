@@ -1,3 +1,3 @@
-GTB Computer Education Jalandhar Online Training at reasonable cost
+GTB Computer Education Jalandhar Online Django Training at reasonable cost
 
 https://www.gtbinstitute.com

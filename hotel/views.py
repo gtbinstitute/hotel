@@ -20,7 +20,7 @@ from .forms import SignupForm, LoginForm, BookingForm, ProfileForm, UserForm
 
 
 def index(request):
-    url = "http://api.openweathermap.org/data/2.5/weather?q=Jalandhar&appid=YOURAPIKEY&units=metric"
+    url = "http://api.openweathermap.org/data/2.5/weather?q=Jalandhar&appid=866720bef22869924a5d38c76429af2c&units=metric"
     json_data = requests.get(url).json()
     temperature = json_data["main"]["temp"]
     tempdata = {"temp" : temperature}
@@ -144,10 +144,20 @@ def booking(request, detailid):
             data.userid = User(id=request.session["userid"])
             data.roomcategoryid = roomcategoryobj
             data.roomdetailid = RoomCategoryDetails(id=detailid)
+            checkindate = data.checkindate
+            checkoutdate = data.checkoutdate
+            daysinfo = checkoutdate - checkindate
 
             data.amount = roomcategorydetailsobj.roomprice
+            totalbill = data.amount * daysinfo.days
+
             data.save()
-            messages.success(request, 'Your request for booking has been successful')
+
+            bookingid = data.id
+
+            messages.success(request, 'Your request for booking has been successful. Your booking id is ' + str(bookingid)
+                             + ' Your total bill amount is ' + str(totalbill)
+                             + '. Pay on 9834984938 on Google Pay / Paytm / UPI')
         else:
             formobj = BookingForm(request.POST)
     return render(request, "booking.html", {"form": formobj, "roomdetails":details})

@@ -20,7 +20,7 @@ from .forms import SignupForm, LoginForm, BookingForm, ProfileForm, UserForm
 
 
 def index(request):
-    url = "http://api.openweathermap.org/data/2.5/weather?q=Jalandhar&appid=866720bef22869924a5d38c76429af2c&units=metric"
+    url = "http://api.openweathermap.org/data/2.5/weather?q=Jalandhar&appid=APIKEY&units=metric"
     json_data = requests.get(url).json()
     temperature = json_data["main"]["temp"]
     tempdata = {"temp" : temperature}

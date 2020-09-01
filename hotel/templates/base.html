@@ -8,6 +8,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <html>
 <head>
 <title>{% block title%} {% endblock %}</title>
+	{% load mytags %}
     {% load static %}
 <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
 <!--theme-style-->
@@ -19,6 +20,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <meta property="og:title" content="Vide" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
 <meta name="keywords" content="Best Hotel Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
@@ -81,7 +83,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						  <ul class="nav navbar-nav">
 							<li><a href="{% url 'ghar' %}" data-hover="Home">Home </a></li>
 							<li><a href="{% url 'aboutus' %}" data-hover="About">About</a></li>
-							  <li><a data-hover="Rooms" href="{% url 'rooms' %}">Rooms</a></li>
+							  <li class="dropdown">
+								  <a class="dropdown-toggle" data-toggle="dropdown" href="#" data-hover="Rooms">Rooms <span class="caret"></span></a>
+								  <ul class="dropdown-menu">
+								  		{% fetch_rooms %}
+								  </ul>
+							  </li>
 							<li><a data-hover="Restaurant" href="restaurant.html">Restaurant</a></li>
 							<li><a data-hover="Gallery" href="gallery.html">Gallery</a></li>
 							  <li><a href="{% url 'signup' %}" data-hover="codes">Signup</a></li>

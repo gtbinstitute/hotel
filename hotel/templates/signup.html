@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %} Signup {% endblock %}
-
+{% load mytags %}
 
 {% block content %}
 <div class="content">
@@ -27,6 +27,8 @@
 						</form>
 					</div>
 					<div class="clearfix"> </div>
+					<h3>Current Time is</h3>
+						<h5>{% my_current_time %}</h5>
 				</div>
 			</div>
 

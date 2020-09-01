@@ -1,0 +1,5 @@
+{% for room in rooms %}
+
+<li><a href="{% url 'myroomdetails' room.id %}">{{ room.categoryname | capfirst }}</a></li>
+
+{% endfor %}

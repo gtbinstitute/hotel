@@ -4,6 +4,7 @@
 
 
 {% block content %}
+{% load mytags %}
 <div class="content">
 			<!---contact--->
 			<div class="contact">
@@ -28,7 +29,9 @@
 								{% endfor %}
 							</ul>
 							{% endif %}
-						</form>
+<br>
+						<h3>Current Time is</h3>
+						<h5>{% my_current_time %}</h5>
 					</div>
 					<div class="clearfix"> </div>
 				</div>

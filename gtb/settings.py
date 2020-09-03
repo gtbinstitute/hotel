@@ -137,3 +137,9 @@ MEDIA_URL = '/media/'
 CKEDITOR_CONFIGS = {'default': {'toolbar_Full': [['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'], ['Link', 'Unlink', 'Anchor'],['Image', 'Iframe', 'Table', 'HorizontalRule'],['TextColor', 'BGColor'],['Smiley', 'SpecialChar'], ['Source'],['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],['NumberedList','BulletedList'],['Indent','Outdent'],['Maximize'],],'extraPlugins': 'justify,liststyle,indent,'}}
 
 LOGIN_URL = "userlogin"
+
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "jalandhargtb@gmail.com"
+EMAIL_HOST_PASSWORD = "yourpassword"
+EMAIL_PORT = "465"
+EMAIL_USE_SSL = True

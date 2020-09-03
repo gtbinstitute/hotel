@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 import requests
+from django.core.mail import send_mail
 from django.db import transaction
 
 from django.http import HttpResponse, HttpResponseRedirect
@@ -16,11 +17,11 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, UpdateView
 
 from .models import RoomCategory, RoomCategoryDetails, Booking
-from .forms import SignupForm, LoginForm, BookingForm, ProfileForm, UserForm
+from .forms import SignupForm, LoginForm, BookingForm, ProfileForm, UserForm, ContactForm
 
 
 def index(request):
-    url = "http://api.openweathermap.org/data/2.5/weather?q=Jalandhar&appid=YOURAPIKEY&units=metric"
+    url = "http://api.openweathermap.org/data/2.5/weather?q=Jalandhar&appid=APIKEY&units=metric"
     json_data = requests.get(url).json()
     temperature = json_data["main"]["temp"]
     tempdata = {"temp" : temperature}
@@ -199,3 +200,18 @@ def mysignout(request):
 
 def showaboutus(request):
     return render(request, "aboutus.html")
+
+
+def showcontactus(request):
+    myform = ContactForm(request.POST or None)
+    if myform.is_valid():
+        data = request.POST
+        name = data.get("name", "0")
+        emailid = data.get("emailid", "0")
+        message = data.get("message", "0")
+        result = send_mail("Message from Hotel Website", "Name : " + name + "\nEmailid : " + emailid +
+                           "\nMessage : " + message, "jalandhargtb@gmail.com", ["gtbcomputers@gmail.com"],
+                           fail_silently=False)
+        return render(request, "contactus.html", {"form": myform, "status": result})
+    else:
+        return render(request, "contactus.html", {"form": myform})

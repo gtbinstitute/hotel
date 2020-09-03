@@ -44,6 +44,11 @@ class UserForm(forms.ModelForm):
         fields = ('email',)
 
 
+class ContactForm(forms.Form):
+    name = forms.CharField(label="Name")
+    emailid = forms.CharField(label="Email ID")
+    message = forms.CharField(label="Message", widget=forms.Textarea)
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="Username")

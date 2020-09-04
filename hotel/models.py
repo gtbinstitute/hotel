@@ -1,3 +1,5 @@
+import random
+
 from django.contrib.auth.models import User
 from django.db import models
 from ckeditor.fields import RichTextField
@@ -41,6 +43,10 @@ class Booking(models.Model):
         ('Other', 'Other'),
     )
     gender = models.CharField(max_length=6, choices=gender_choices)
+
+
+def random_string():
+    return str(random.randint(10000, 99999))
 
 
 class Profile(models.Model):

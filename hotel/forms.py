@@ -1,9 +1,14 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.core.mail import EmailMessage
 from django.forms import ModelForm
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
 from hotel.models import Booking, Profile
+from hotel.token_generator import account_activation_token
 
 
 class SignupForm(forms.ModelForm):
@@ -26,9 +31,20 @@ class SignupForm(forms.ModelForm):
     def save(self, commit=True):
         userobj = super(SignupForm, self).save(commit=False)
         userobj.set_password(self.cleaned_data["password2"])
-        # userobj.is_active = False
+        userobj.is_active = False
         if commit:
             userobj.save()
+            current_site = "localhost:8000"
+            email_subject = 'Activate Your Account'
+            message = render_to_string('activate_account.html', {
+                'user': userobj,
+                'domain': current_site,
+                'uid': urlsafe_base64_encode(force_bytes(userobj.pk)).decode(),
+                'token': account_activation_token.make_token(userobj),
+            })
+            to_email = self.cleaned_data.get('email')
+            email = EmailMessage(email_subject, message, to=[to_email])
+            email.send()
         return userobj
 
 
@@ -59,8 +75,9 @@ class LoginForm(forms.Form):
         pass1 = self.cleaned_data.get("password")
 
         user_obj = authenticate(username=user1, password=pass1)
+
         if not user_obj:
-            raise forms.ValidationError("Wrong username / password")
+            raise forms.ValidationError("Wrong username / password or not activated by email")
         return super(LoginForm, self).clean(*args, **kwargs)
 
         # user_obj = User.objects.filter(username=user1).first()

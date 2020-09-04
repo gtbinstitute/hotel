@@ -14,17 +14,20 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.urls import reverse_lazy, reverse
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_decode
 from django.views.generic import CreateView, ListView, UpdateView
 
+from hotel.token_generator import account_activation_token
 from .models import RoomCategory, RoomCategoryDetails, Booking
 from .forms import SignupForm, LoginForm, BookingForm, ProfileForm, UserForm, ContactForm
 
 
 def index(request):
-    url = "http://api.openweathermap.org/data/2.5/weather?q=Jalandhar&appid=APIKEY&units=metric"
+    url = "http://api.openweathermap.org/data/2.5/weather?q=Jalandhar&appid=866720bef22869924a5d38c76429af2c&units=metric"
     json_data = requests.get(url).json()
     temperature = json_data["main"]["temp"]
-    tempdata = {"temp" : temperature}
+    tempdata = {"temp": temperature}
     return render(request, "index.html", tempdata)
     # return HttpResponse("<h1>Welcome to Hotel Website</h1>")
 
@@ -52,11 +55,27 @@ def RoomDetails(request, catid):
 class createuser(SuccessMessageMixin, CreateView):
     form_class = SignupForm
     template_name = 'signup.html'
-    success_message = "Your account has been created successfully"
+    success_message = "Your account has been created but pending for authentication. Please check your mail to authenticate"
     success_url = reverse_lazy('signup')
 
     def dispatch(self, *args, **kwargs):
         return super(createuser, self).dispatch(*args, **kwargs)
+
+
+def activate_account(request, uidb64, token):
+    try:
+        uid = force_bytes(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        return HttpResponse('Your account has been activate successfully')
+    else:
+        return HttpResponse('Activation link is invalid!')
+
 
 @login_required
 @transaction.atomic
@@ -103,7 +122,7 @@ def booking(request, detailid):
     image = roomcategoryobj.Image
     catname = roomcategoryobj.categoryname
     roomoptions = roomcategorydetailsobj.roomoptions
-    details = {"image":image, "catname" :catname, "roomoptions":roomoptions}
+    details = {"image": image, "catname": catname, "roomoptions": roomoptions}
     formobj = BookingForm(request.POST or None)
     if request.method == "POST":
         if formobj.is_valid():
@@ -124,11 +143,11 @@ def booking(request, detailid):
             # if either of these is true, abort and render the error
             if case_1 or case_2 or case_3:
                 count1 = Booking.objects.filter(roomcategoryid=categoryid, checkindate__lte=data.checkindate,
-                                            checkoutdate__gte=data.checkindate).count()
+                                                checkoutdate__gte=data.checkindate).count()
                 count2 = Booking.objects.filter(roomcategoryid=categoryid, checkindate__lte=data.checkoutdate,
-                                            checkoutdate__gte=data.checkoutdate).count()
+                                                checkoutdate__gte=data.checkoutdate).count()
                 count3 = Booking.objects.filter(roomcategoryid=categoryid, checkindate__gte=data.checkindate,
-                                            checkoutdate__lte=data.checkoutdate).count()
+                                                checkoutdate__lte=data.checkoutdate).count()
 
                 totalcount = 0
                 if count1 > 0:
@@ -156,12 +175,13 @@ def booking(request, detailid):
 
             bookingid = data.id
 
-            messages.success(request, 'Your request for booking has been successful. Your booking id is ' + str(bookingid)
+            messages.success(request,
+                             'Your request for booking has been successful. Your booking id is ' + str(bookingid)
                              + ' Your total bill amount is ' + str(totalbill)
                              + '. Pay on 9834984938 on Google Pay / Paytm / UPI')
         else:
             formobj = BookingForm(request.POST)
-    return render(request, "booking.html", {"form": formobj, "roomdetails":details})
+    return render(request, "booking.html", {"form": formobj, "roomdetails": details})
 
 
 @login_required

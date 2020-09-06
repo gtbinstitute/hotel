@@ -1,2 +1,1 @@
-
-hello
+web : gunicorn gtb.wsgi

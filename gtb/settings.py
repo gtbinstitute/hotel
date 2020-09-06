@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
-
+import django_heroku
 import os
 
 
@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '(^t*h^tb)+lo)7s5-&t*7rd&dlvqpkds$amha$7+v^qpszy-4r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['gtbhotel.herokuapp.com', 'localhost:8000']
 
 
 
@@ -143,3 +143,6 @@ EMAIL_HOST_USER = "jalandhargtb@gmail.com"
 EMAIL_HOST_PASSWORD = "jalandhar123"
 EMAIL_PORT = "465"
 EMAIL_USE_SSL = True
+
+
+django_heroku.settings(locals())

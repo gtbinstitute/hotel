@@ -140,7 +140,7 @@ LOGIN_URL = "userlogin"
 
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_HOST_USER = "jalandhargtb@gmail.com"
-EMAIL_HOST_PASSWORD = "jalandhar123"
+EMAIL_HOST_PASSWORD = "yourpassword"
 EMAIL_PORT = "465"
 EMAIL_USE_SSL = True
 
